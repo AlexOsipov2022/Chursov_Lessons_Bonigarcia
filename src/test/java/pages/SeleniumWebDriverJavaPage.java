@@ -14,7 +14,9 @@ public class SeleniumWebDriverJavaPage extends BasePage{
 
 
     public SeleniumWebDriverJavaPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(); // Вызов конструктора BasePage без параметров
+        this.driver = driver; // Инициализация драйвера
+        this.wait = wait; // Инициализация WebDriverWait
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
     }
 }

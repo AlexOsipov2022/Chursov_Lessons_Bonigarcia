@@ -11,7 +11,9 @@ public class CookiesPage extends BasePage{
     private WebElement DisplayCookies;
 
     public CookiesPage(WebDriver driver, WebDriverWait wait) {
-        super(driver, wait);
+        super(); // Вызов конструктора BasePage без параметров
+        this.driver = driver; // Инициализация драйвера
+        this.wait = wait; // Инициализация WebDriverWait
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/cookies.html");
     }
 

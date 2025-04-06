@@ -2,45 +2,51 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.BasePage;
 import pages.CookiesPage;
+import pages.BasePage;
 
-import java.time.Duration;
+import java.util.Set;
 
-public class SeleniumCookieTests {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    private WebDriver driver;
-    private WebDriverWait wait;
+public class SeleniumCookieTests extends BasePage {
+
     private CookiesPage cookiesPage;
 
     @BeforeEach
     void setup() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        cookiesPage = new CookiesPage(driver, wait);
+        initDriver();  // Инициализация драйвера и wait
+        cookiesPage = new CookiesPage(driver, wait); // Инициализация страницы CookiesPage
     }
 
     @Test
     void AddCookieTest() {
-        driver.manage().addCookie(new Cookie("myCookie", "HelloCookie"));
+        driver.manage().addCookie(new Cookie("myCookie", "Hello Cookie"));
+
+        Cookie cookie = driver.manage().getCookieNamed("myCookie");
+
+        assertNotNull(cookie, "Cookie не добавлено!");
+
         cookiesPage.clickDisplayCookies();
     }
 
     @Test
     void DeleteCookietest() {
-        driver.manage().addCookie(new Cookie("myCookie", "HelloCookie"));
-        driver.manage().deleteCookieNamed("myCookie");
+        driver.manage().addCookie(new Cookie("myCookie_2", "Hello Cookie_2"));
+        driver.manage().deleteCookieNamed("myCookie_2");
+
+        Set<Cookie> cookies = driver.manage().getCookies();
+        boolean isCookieDeleted = cookies.stream()
+                .noneMatch(c -> c.getName().equals("myCookie_2"));
+
+        assertTrue(isCookieDeleted, "Cookie с именем 'myCookie_2' не удалена!");
 
         cookiesPage.clickDisplayCookies();
     }
 
     @AfterEach
-    void tearDown() {
-        driver.quit();
+    public void tearDown() {
+        super.tearDown(); // Вызов метода для закрытия драйвера
     }
 }
