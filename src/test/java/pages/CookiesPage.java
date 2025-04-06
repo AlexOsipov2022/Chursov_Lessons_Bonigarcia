@@ -14,9 +14,8 @@ public class CookiesPage extends BasePage {
     @FindBy(id = "refresh-cookies")
     private WebElement DisplayCookies;
 
-    // Конструктор, принимающий WebDriver
     public CookiesPage(WebDriver driver) {
-        super(driver);  // Передаем driver в конструктор родительского класса
+        super(driver);
         PageFactory.initElements(driver, this);
     }
 
