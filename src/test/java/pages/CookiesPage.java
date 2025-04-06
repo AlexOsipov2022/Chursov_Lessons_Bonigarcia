@@ -5,16 +5,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SeleniumWebDriverJavaPage extends BasePage{
+public class CookiesPage extends BasePage{
 
     @FindBy(id = "refresh-cookies")
     private WebElement DisplayCookies;
-    @FindBy(id = "password")
-    private WebElement passwordInput;
 
-
-    public SeleniumWebDriverJavaPage(WebDriver driver, WebDriverWait wait) {
+    public CookiesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
-        driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
+        driver.get("https://bonigarcia.dev/selenium-webdriver-java/cookies.html");
+    }
+
+    public void clickDisplayCookies() {
+        DisplayCookies.click();
     }
 }
