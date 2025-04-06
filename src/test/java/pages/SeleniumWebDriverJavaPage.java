@@ -13,12 +13,12 @@ public class SeleniumWebDriverJavaPage extends BasePage{
     private WebElement passwordInput;
 
 
-    public SeleniumWebDriverJavaPage(WebDriver driver, WebDriverWait wait) {
-        super();
+    public SeleniumWebDriverJavaPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
-        this.wait10 = wait;
-        this.wait5 = wait;
-        this.wait2 = wait;
+        this.wait = wait;
+//        this.wait5 = wait;
+//        this.wait2 = wait;
         driver.get("https://bonigarcia.dev/selenium-webdriver-java/");
     }
 }

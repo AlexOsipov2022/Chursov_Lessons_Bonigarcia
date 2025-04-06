@@ -1,23 +1,31 @@
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import pages.CookiesPage;
-import pages.BasePage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SeleniumCookieTests extends BasePage {
+public class SeleniumCookieTests {
 
+    private WebDriver driver;
     private CookiesPage cookiesPage;
 
     @BeforeEach
     void setup() {
-        initDriver();
-        cookiesPage = new CookiesPage(driver, wait10);
+        driver = new ChromeDriver(); // Инициализируем драйвер
+        cookiesPage = new CookiesPage(driver); // Передаем драйвер в CookiesPage
+        cookiesPage.navigateToPage();  // Переходим на страницу
     }
 
     @Test
@@ -26,10 +34,18 @@ public class SeleniumCookieTests extends BasePage {
         Cookie cookie = driver.manage().getCookieNamed("myCookie");
 
         assertNotNull(cookie, "Cookie не добавлено!");
+        cookiesPage.clickDisplayCookies();
+
+        try {
+            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(scrFile, new File("./image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    void DeleteCookietest() {
+    void DeleteCookietest() throws IOException {
         driver.manage().addCookie(new Cookie("myCookie_2", "Hello Cookie_2"));
         driver.manage().deleteCookieNamed("myCookie_2");
 
@@ -40,10 +56,15 @@ public class SeleniumCookieTests extends BasePage {
         assertTrue(isCookieDeleted, "Cookie с именем 'myCookie_2' не удалена!");
 
         cookiesPage.clickDisplayCookies();
+
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(scrFile, new File("./page_after_load.png"));
     }
 
     @AfterEach
     public void tearDown() {
-        super.tearDown();
+        if (driver != null) {
+            driver.quit(); // Закрываем браузер после каждого теста
+        }
     }
 }
