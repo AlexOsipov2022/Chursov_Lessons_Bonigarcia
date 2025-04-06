@@ -38,7 +38,7 @@ public class SeleniumCookieTests {
 
         try {
             File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File("./image.png"));
+            FileUtils.copyFile(scrFile, new File("./page_after_add_cookie.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,19 +46,20 @@ public class SeleniumCookieTests {
 
     @Test
     void DeleteCookietest() throws IOException {
+        driver.manage().addCookie(new Cookie("myCookie_1", "Hello Cookie_1"));
         driver.manage().addCookie(new Cookie("myCookie_2", "Hello Cookie_2"));
-        driver.manage().deleteCookieNamed("myCookie_2");
+        driver.manage().deleteCookieNamed("myCookie_1");
 
         Set<Cookie> cookies = driver.manage().getCookies();
         boolean isCookieDeleted = cookies.stream()
-                .noneMatch(c -> c.getName().equals("myCookie_2"));
+                .noneMatch(c -> c.getName().equals("myCookie_1"));
 
-        assertTrue(isCookieDeleted, "Cookie с именем 'myCookie_2' не удалена!");
+        assertTrue(isCookieDeleted, "Cookie с именем 'myCookie_1' не удалена!");
 
         cookiesPage.clickDisplayCookies();
 
         File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(scrFile, new File("./page_after_load.png"));
+        FileUtils.copyFile(scrFile, new File("./page_after_delete_cookie.png"));
     }
 
     @AfterEach
