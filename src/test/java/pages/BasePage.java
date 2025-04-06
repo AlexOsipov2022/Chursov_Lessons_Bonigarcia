@@ -9,25 +9,27 @@ import java.time.Duration;
 public class BasePage {
 
     protected WebDriver driver;
-    protected WebDriverWait wait;
+    protected WebDriverWait wait10;
+    protected WebDriverWait wait5;
+    protected WebDriverWait wait2;
 
     // Конструктор по умолчанию для BasePage
     public BasePage() {
         // Конструктор без параметров
     }
 
-    // Метод для инициализации драйвера и WebDriverWait
     public void initDriver() {
         this.driver = new ChromeDriver(); // Инициализация драйвера
         this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2)); // Установка таймаутов
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Инициализация WebDriverWait
+        this.wait10 = new WebDriverWait(driver, Duration.ofSeconds(10)); // Инициализация WebDriverWait
+        this.wait5 = new WebDriverWait(driver, Duration.ofSeconds(5)); // Инициализация WebDriverWait
+        this.wait2 = new WebDriverWait(driver, Duration.ofSeconds(2)); // Инициализация WebDriverWait
         PageFactory.initElements(driver, this); // Инициализация элементов страницы
     }
 
-    // Метод для закрытия драйвера
     public void tearDown() {
         if (driver != null) {
-            driver.quit(); // Закрытие браузера
+            driver.quit();
         }
     }
 }

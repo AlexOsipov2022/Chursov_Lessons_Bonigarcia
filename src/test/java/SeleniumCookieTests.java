@@ -16,19 +16,16 @@ public class SeleniumCookieTests extends BasePage {
 
     @BeforeEach
     void setup() {
-        initDriver();  // Инициализация драйвера и wait
-        cookiesPage = new CookiesPage(driver, wait); // Инициализация страницы CookiesPage
+        initDriver();
+        cookiesPage = new CookiesPage(driver, wait10);
     }
 
     @Test
     void AddCookieTest() {
         driver.manage().addCookie(new Cookie("myCookie", "Hello Cookie"));
-
         Cookie cookie = driver.manage().getCookieNamed("myCookie");
 
         assertNotNull(cookie, "Cookie не добавлено!");
-
-        cookiesPage.clickDisplayCookies();
     }
 
     @Test
@@ -47,6 +44,6 @@ public class SeleniumCookieTests extends BasePage {
 
     @AfterEach
     public void tearDown() {
-        super.tearDown(); // Вызов метода для закрытия драйвера
+        super.tearDown();
     }
 }
